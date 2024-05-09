@@ -16,13 +16,13 @@ local parameterized_tests = require("neotest-jest.parameterized-tests")
 ---@type neotest.Adapter
 local adapter = { name = "neotest-jest" }
 
-local packageFiles = vim.tbl_filter(function(i) return i ~= "node_modules" end, vim.split(vim.fn.glob("**/package.json"),"\n"))
+local rootPackageJson = vim.tbl_filter(function(i) return i:match("node_modules") == nil end, vim.split(vim.fn.glob("**/package.json"),"\n"))
 
 --local roots = filter(packageFiles,function(path) return path ~= "node_modules" end)
 
 logger.debug("roots: " .. vim.inspect(packageFiles))
 
-local rootPackageJson = lib.files.match_root_pattern("package.json")
+--local rootPackageJson = lib.files.match_root_pattern("package.json")
 -- vim.fn.getcwd() .. "/package.json"
 
 ---@return boolean
@@ -115,6 +115,7 @@ local getJestConfig = jest_util.getJestConfig
 ---@param file_path? string
 ---@return boolean
 function adapter.is_test_file(file_path)
+    logger.trace("jest.is_test_file " .. file_path)
     if file_path == nil then
         return false
     end
