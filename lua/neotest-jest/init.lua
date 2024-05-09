@@ -24,7 +24,7 @@ local function rootProjectHasJestDependency()
     local path = rootPackageJson
 
 
-    logger.debug("rootProjectHasJestDependency" ..  path)
+    logger.debug("rootProjectHasJestDependency" ..  path())
     local success, packageJsonContent = pcall(lib.files.read, path)
     if not success then
         print("cannot read package.json")
