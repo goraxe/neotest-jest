@@ -16,7 +16,8 @@ local parameterized_tests = require("neotest-jest.parameterized-tests")
 ---@type neotest.Adapter
 local adapter = { name = "neotest-jest" }
 
-local rootPackageJson = vim.fn.getcwd() .. "/package.json"
+local rootPackageJson = lib.files.match_root_pattern("package.json")
+-- vim.fn.getcwd() .. "/package.json"
 
 ---@return boolean
 local function rootProjectHasJestDependency()
