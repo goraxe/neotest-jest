@@ -106,14 +106,14 @@ end
 
 adapter.root = function(path)
     logger.debug("jest.root " .. path)
-    logger.trace("will return " .. lib.files.match_root_pattern(
+    logger.trace("will return " .. vim.inspect(lib.files.match_root_pattern(
         {
             filter = function(i) return i:match("node_modules") == nil end,
             return_table = true,
             check_parents = false
         },
         "package.json"
-    )(path))
+    )(path)))
     return lib.files.match_root_pattern("package.json")(path)
 end
 
