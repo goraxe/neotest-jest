@@ -98,7 +98,8 @@ local function hasJestDependency(path)
 end
 
 adapter.root = function(path)
-    logger.debug("jest.root" .. path)
+    logger.debug("jest.root " .. path)
+    logger.trace("will return " .. lib.files.match_root_pattern("package.json")(path))
     return lib.files.match_root_pattern("package.json")(path)
 end
 
