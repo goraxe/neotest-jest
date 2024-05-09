@@ -105,7 +105,7 @@ end
 
 adapter.root = function(path)
     logger.debug("jest.root " .. path)
-    logger.trace("will return " .. lib.files.match_root_pattern("package.json")(path))
+    logger.trace("will return " .. lib.files.match_root_pattern({filter = adapter.filter_dir  , return_table = true },"package.json")(path))
     return lib.files.match_root_pattern("package.json")(path)
 end
 
