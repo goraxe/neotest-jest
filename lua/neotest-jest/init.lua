@@ -16,7 +16,8 @@ local parameterized_tests = require("neotest-jest.parameterized-tests")
 ---@type neotest.Adapter
 local adapter = { name = "neotest-jest" }
 
-local rootPackageJson = vim.tbl_filter(function(i) return i:match("node_modules") == nil end, vim.split(vim.fn.glob("**/package.json"),"\n"))
+local rootPackageJson = vim.tbl_filter(function(i) return i:match("node_modules") == nil end,
+    vim.split(vim.fn.glob("**/package.json"), "\n"))
 
 --local roots = filter(packageFiles,function(path) return path ~= "node_modules" end)
 
@@ -105,7 +106,14 @@ end
 
 adapter.root = function(path)
     logger.debug("jest.root " .. path)
-    logger.trace("will return " .. lib.files.match_root_pattern({filter = adapter.filter_dir  , return_table = true },"package.json")(path))
+    logger.trace("will return " .. lib.files.match_root_pattern(
+        {
+            filter = function(i) return i:match("node_modules") == nil end,
+            return_table = true,
+            check_parents = false
+        },
+        "package.json"
+    )(path))
     return lib.files.match_root_pattern("package.json")(path)
 end
 
