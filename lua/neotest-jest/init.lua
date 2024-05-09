@@ -279,6 +279,7 @@ local function escapeTestPattern(s)
 end
 
 local function get_default_strategy_config(strategy, command, cwd)
+    logger.debug("called with cwd: " .. cwd .. " and command: " .. vim.inspect(command))
     local config = {
         dap = function()
             return {
