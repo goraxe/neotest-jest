@@ -16,22 +16,11 @@ local parameterized_tests = require("neotest-jest.parameterized-tests")
 ---@type neotest.Adapter
 local adapter = { name = "neotest-jest" }
 
+local packageFiles = vim.tbl_filter(function(i) return i ~= "node_modules" end, vim.split(vim.fn.glob("**/package.json")))
 
-local function filter(t, filterIter)
-  local out = {}
+--local roots = filter(packageFiles,function(path) return path ~= "node_modules" end)
 
-  for k, v in ipairs(t) do
-    if filterIter(v, k, t) then table.insert(out,v) end
-  end
-
-  return out
-end
-
-local packageFiles = vim.fn.glob("**/package.json")
-
-local roots = filter(packageFiles,function(path) return path ~= "node_modules" end)
-
-logger.debug("roots: ".. vim.inspect(roots))
+logger.debug("roots: " .. vim.inspect(packageFiles))
 
 local rootPackageJson = lib.files.match_root_pattern("package.json")
 -- vim.fn.getcwd() .. "/package.json"
@@ -41,7 +30,7 @@ local function rootProjectHasJestDependency()
     local path = rootPackageJson
 
 
-    logger.debug("rootProjectHasJestDependency" ..  path())
+    logger.debug("rootProjectHasJestDependency" .. path())
     local success, packageJsonContent = pcall(lib.files.read, path)
     if not success then
         print("cannot read package.json")
@@ -72,7 +61,7 @@ end
 ---@param path string
 ---@return boolean
 local function hasJestDependency(path)
-    logger.debug("hasJestDependency" ..  path)
+    logger.debug("hasJestDependency" .. path)
     local rootPath = lib.files.match_root_pattern("package.json")(path)
 
     if not rootPath then
