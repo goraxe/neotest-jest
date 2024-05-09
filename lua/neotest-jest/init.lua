@@ -17,9 +17,19 @@ local parameterized_tests = require("neotest-jest.parameterized-tests")
 local adapter = { name = "neotest-jest" }
 
 
+local function filter(t, filterIter)
+  local out = {}
+
+  for k, v in ipairs(t) do
+    if filterIter(v, k, t) then table.insert(out,v) end
+  end
+
+  return out
+end
+
 local packageFiles = vim.fn.glob("**/package.json")
 
-local roots = packageFiles:filter(function(path) return path ~= "node_modules" end)
+local roots = filter(packageFiles,function(path) return path ~= "node_modules" end)
 
 logger.debug("roots: ".. vim.inspect(roots))
 
