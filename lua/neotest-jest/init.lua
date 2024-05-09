@@ -23,6 +23,8 @@ local rootPackageJson = lib.files.match_root_pattern("package.json")
 local function rootProjectHasJestDependency()
     local path = rootPackageJson
 
+
+    logger.debug("rootProjectHasJestDependency" ..  path)
     local success, packageJsonContent = pcall(lib.files.read, path)
     if not success then
         print("cannot read package.json")
@@ -53,7 +55,7 @@ end
 ---@param path string
 ---@return boolean
 local function hasJestDependency(path)
-    logger.debug("hasJestDependency", path)
+    logger.debug("hasJestDependency" ..  path)
     local rootPath = lib.files.match_root_pattern("package.json")(path)
 
     if not rootPath then
@@ -96,6 +98,7 @@ local function hasJestDependency(path)
 end
 
 adapter.root = function(path)
+    logger.debug("jest.root" .. path)
     return lib.files.match_root_pattern("package.json")(path)
 end
 
@@ -295,6 +298,7 @@ end
 ---@param path string
 ---@return string|nil
 local function getCwd(path)
+    logger.debug("getCwd", path)
     return nil
 end
 
@@ -422,6 +426,8 @@ function adapter.build_spec(args)
         escapeTestPattern(vim.fs.normalize(pos.path)),
     })
 
+    -- FIXME: what?  This is calling a function that returns null
+    logger.debug("pos.path: " .. pos.path)
     local cwd = getCwd(pos.path)
 
     -- creating empty file for streaming results
